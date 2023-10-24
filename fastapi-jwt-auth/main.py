@@ -4,7 +4,7 @@
 import uvicorn
 from fastapi import FastAPI, Body, Depends
 
-from app.model import PostSchema, UserSchema, UserLoginSchema
+from app.model import PostSchema, UserSchema, UserLoginSchema, CustomerSchema
 from app.auth.auth_bearer import JWTBearer
 from app.auth.auth_handler import signJWT, signCustomerJWT, customer_register_token_response
 
@@ -100,7 +100,7 @@ def user_login(user: UserLoginSchema = Body(...)):
     }
 
 @app.post("/customer/auth/register", tags=["user"])
-def customer_register(user: UserSchema = Body(...)):
+def customer_register(user: CustomerSchema = Body(...)):
     users.append(user) # replace with db call, making sure to hash the password first
     return customer_register_token_response(user.email)
 

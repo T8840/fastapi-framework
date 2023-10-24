@@ -8,6 +8,7 @@ from app.model import PostSchema, UserSchema, UserLoginSchema
 from app.auth.auth_bearer import JWTBearer
 from app.auth.auth_handler import signJWT, signCustomerJWT
 
+from fastapi.middleware.cors import CORSMiddleware
 
 posts = [
     {
@@ -30,7 +31,14 @@ posts = [
 users = []
 
 app = FastAPI()
-
+origins = ["*"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 def check_user(data: UserLoginSchema):

@@ -6,7 +6,7 @@ from fastapi import FastAPI, Body, Depends
 
 from app.model import PostSchema, UserSchema, UserLoginSchema
 from app.auth.auth_bearer import JWTBearer
-from app.auth.auth_handler import signJWT, signCustomerJWT
+from app.auth.auth_handler import signJWT, signCustomerJWT, customer_register_token_response
 
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -98,6 +98,11 @@ def user_login(user: UserLoginSchema = Body(...)):
     return {
         "error": "Wrong login details!"
     }
+
+@app.post("/customer/auth/register", tags=["user"])
+def customer_register(user: UserSchema = Body(...)):
+    users.append(user) # replace with db call, making sure to hash the password first
+    return customer_register_token_response(user.email)
 
 
 @app.post("/customer/auth/login", tags=["user"])

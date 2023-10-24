@@ -28,6 +28,18 @@ class UserSchema(BaseModel):
             }
         }
 
+class CustomerSchema(BaseModel):
+    email: EmailStr = Field(...)
+    password: str = Field(...)
+    role: str = Field(...)
+
+    class Config:
+        schema_extra = {
+            "example": {              
+               
+            }
+        }        
+
 class UserLoginSchema(BaseModel):
     email: EmailStr = Field(...)
     password: str = Field(...)

@@ -2,7 +2,7 @@
 #Instagram: Bek_Brace
 
 import uvicorn
-from fastapi import FastAPI, Body, Depends
+from fastapi import FastAPI, Body, Depends,  UploadFile, File
 
 from app.model import PostSchema, UserSchema, UserLoginSchema, CustomerSchema, Order, OrderCreateRequest
 from app.auth.auth_bearer import JWTBearer

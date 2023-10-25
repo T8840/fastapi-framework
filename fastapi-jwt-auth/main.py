@@ -158,19 +158,20 @@ def get_cars(name: str = "", category: str = "", isRented: str = "", minPrice: s
     # 根据查询参数进行筛选和过滤
     filtered_cars = []
     for car in cars:
-        if name in car["name"] and category in car["category"] and str(car["status"]).lower() == isRented.lower():
-            if minPrice and maxPrice:
-                if minPrice <= car["price"] <= maxPrice:
-                    filtered_cars.append(car)
-            elif minPrice and not maxPrice:
-                if minPrice <= car["price"]:
-                    filtered_cars.append(car)
-            elif maxPrice and not minPrice:
-                if car["price"] <= maxPrice:
-                    filtered_cars.append(car)
-            else:
-                filtered_cars.append(car)
-
+        # if name in car["name"] and category in car["category"] and str(car["status"]).lower() == isRented.lower():
+        #     if minPrice and maxPrice:
+        #         if minPrice <= car["price"] <= maxPrice:
+        #             filtered_cars.append(car)
+        #     elif minPrice and not maxPrice:
+        #         if minPrice <= car["price"]:
+        #             filtered_cars.append(car)
+        #     elif maxPrice and not minPrice:
+        #         if car["price"] <= maxPrice:
+        #             filtered_cars.append(car)
+        #     else:
+        #         filtered_cars.append(car)
+        if name in car["name"]:
+            filtered_cars.append(car)
     # 分页处理
     page = 1
     pageSize = 10

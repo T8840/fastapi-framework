@@ -208,9 +208,9 @@ def create_order(request: OrderCreateRequest):
     # 根据请求内容创建订单实例
     order = Order(
         id=order_id_counter,
-        start_rent_at=request.start_rent_at,
+        start_rent_at=request.start_rent_at.strftime("%Y-%m-%d"),  # 将 date 对象转换为指定格式的字符串
+        finish_rent_at=request.finish_rent_at.strftime("%Y-%m-%d"),  # 将 date 对象转换为指定格式的字符串        
         status=False,
-        finish_rent_at=request.finish_rent_at,
         UserId=1156,  # 用户ID需要根据实际情况设置
         CarId=request.car_id,
         total_price=calculate_total_price(request.start_rent_at, request.finish_rent_at),  # 根据租赁时间计算总价格

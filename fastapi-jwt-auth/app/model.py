@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field, EmailStr, validator
 from typing import List, Set
 from datetime import datetime
+from datetime import date
 
 
 class PostSchema(BaseModel):
@@ -124,8 +125,8 @@ class CarsListSchema(BaseModel):
 
 
 class OrderCreateRequest(BaseModel):
-    start_rent_at: datetime
-    finish_rent_at: datetime
+    start_rent_at: date
+    finish_rent_at: date
     car_id: int
 
     @validator('start_rent_at', 'finish_rent_at')

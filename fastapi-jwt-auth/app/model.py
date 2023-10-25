@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, EmailStr
+from pydantic import BaseModel, Field, EmailStr, validator
 from typing import List, Set
 from datetime import datetime
 
@@ -127,6 +127,16 @@ class OrderCreateRequest(BaseModel):
     start_rent_at: datetime
     finish_rent_at: datetime
     car_id: int
+
+    @validator('start_rent_at', 'finish_rent_at')
+    def validate_datetime(cls, value):
+        # 自定义日期时间验证器
+        # 是为了针对前端传入"start_rent_at":"2023-10-26","finish_rent_at":"2023-10-27"
+        # 如果不加入这个那么前端传入格式为："start_rent_at": "2023-10-26T00:00:00.000Z", "finish_rent_at": "2023-10-27T00:00:00.000Z",
+        try:
+            return datetime.strptime(value, "%Y-%m-%d")  # 修改日期时间的解析格式
+        except ValueError:
+            raise ValueError("Invalid datetime format. Please use the format YYYY-MM-DD.")
 
 class Order(BaseModel):
     id: int

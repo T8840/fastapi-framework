@@ -112,3 +112,78 @@ def customer_login(user: UserLoginSchema = Body(...)):
     return {
         "error": "Wrong login details!"
     }
+
+
+cars = [
+                {
+                    "id": 2901,
+                    "name": "Pajero SUV",
+                    "category": "medium",
+                    "price": 550000,
+                    "status": false,
+                    "start_rent_at": null,
+                    "finish_rent_at": null,
+                    "image": "https://firebasestorage.googleapis.com/v0/b/km-sib-2---secondhand.appspot.com/o/cars%2F1697795087258-1665112943_mitsubishi-new-pajero-sport-rajanya-segmen-suv-medium.webp?alt=media",
+                    "createdAt": "2023-08-21T15:40:28.426Z",
+                    "updatedAt": "2023-10-20T09:44:47.259Z"
+                },
+                {
+                    "id": 2800,
+                    "name": "Corvette C6R Cop edition",
+                    "category": "small",
+                    "price": 2500000,
+                    "status": false,
+                    "start_rent_at": null,
+                    "finish_rent_at": null,
+                    "image": "https://firebasestorage.googleapis.com/v0/b/km-sib-2---secondhand.appspot.com/o/cars%2F1691510489595-4765469221049107489_23.jpg?alt=media",
+                    "createdAt": "2023-08-08T16:01:29.600Z",
+                    "updatedAt": "2023-08-08T16:01:29.600Z"
+                },
+                {
+                    "id": 3016,
+                    "name": "Hilux tes",
+                    "category": "medium",
+                    "price": 123000,
+                    "status": false,
+                    "start_rent_at": null,
+                    "finish_rent_at": null,
+                    "image": "https://firebasestorage.googleapis.com/v0/b/km-sib-2---secondhand.appspot.com/o/cars%2F1697784388737-pngwing.com_(1).png?alt=media",
+                    "createdAt": "2023-10-20T06:46:28.740Z",
+                    "updatedAt": "2023-10-20T06:46:28.740Z"
+                }
+            ]
+
+@app.get("/customer/v2/car", tags=["cars"])
+def get_cars(name: str = "", category: str = "", isRented: str = "", minPrice: str = "", maxPrice: str = ""):
+    # 根据查询参数进行筛选和过滤
+    filtered_cars = []
+    for car in cars:
+        if name in car["name"] and category in car["category"] and str(car["status"]).lower() == isRented.lower():
+            if minPrice and maxPrice:
+                if minPrice <= car["price"] <= maxPrice:
+                    filtered_cars.append(car)
+            elif minPrice and not maxPrice:
+                if minPrice <= car["price"]:
+                    filtered_cars.append(car)
+            elif maxPrice and not minPrice:
+                if car["price"] <= maxPrice:
+                    filtered_cars.append(car)
+            else:
+                filtered_cars.append(car)
+
+    # 分页处理
+    page = 1
+    pageSize = 10
+    count = len(filtered_cars)
+    pageCount = math.ceil(count / pageSize)
+    start_index = (page - 1) * pageSize
+    end_index = start_index + pageSize
+    paginated_cars = filtered_cars[start_index:end_index]
+
+    return {
+        "page": page,
+        "pageSize": pageSize,
+        "pageCount": pageCount,
+        "count": count,
+        "cars": paginated_cars
+    }

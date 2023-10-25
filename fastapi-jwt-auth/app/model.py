@@ -1,5 +1,7 @@
 from pydantic import BaseModel, Field, EmailStr
 from typing import List, Set
+from datetime import datetime
+
 
 class PostSchema(BaseModel):
     id: int = Field(default=None)
@@ -118,6 +120,22 @@ class CarsListSchema(BaseModel):
                 }
             ]
         }
-
         }
 
+
+class OrderCreateRequest(BaseModel):
+    start_rent_at: datetime
+    finish_rent_at: datetime
+    car_id: int
+
+class Order(BaseModel):
+    id: int
+    start_rent_at: datetime
+    status: bool
+    finish_rent_at: datetime
+    UserId: int
+    CarId: int
+    total_price: int
+    updatedAt: datetime
+    createdAt: datetime
+    slip: str = None

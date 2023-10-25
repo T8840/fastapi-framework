@@ -4,12 +4,24 @@
 import uvicorn
 from fastapi import FastAPI, Body, Depends
 
-from app.model import PostSchema, UserSchema, UserLoginSchema, CustomerSchema
+from app.model import PostSchema, UserSchema, UserLoginSchema, CustomerSchema, Order, OrderCreateRequest
 from app.auth.auth_bearer import JWTBearer
 from app.auth.auth_handler import signJWT, signCustomerJWT, customer_register_token_response
 
 from fastapi.middleware.cors import CORSMiddleware
 import math
+from datetime import datetime
+
+app = FastAPI()
+origins = ["*"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 posts = [
     {
         "id": 1,
@@ -30,17 +42,6 @@ posts = [
 
 users = []
 
-app = FastAPI()
-origins = ["*"]
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-
 def check_user(data: UserLoginSchema):
     for user in users:
         if user.email == data.email and user.password == data.password:
@@ -49,7 +50,6 @@ def check_user(data: UserLoginSchema):
 
 
 # route handlers
-
 # testing
 @app.get("/", tags=["test"])
 def greet():
@@ -196,3 +196,38 @@ def get_car_detail(car_id: int):
         if car["id"] == car_id:
             return car
     return {"message": "Car Id not found"}
+
+
+orders = []
+order_id_counter = 1
+
+@app.post("/customer/order", tags=["orders"])
+def create_order(request: OrderCreateRequest):
+    global order_id_counter
+    
+    # 根据请求内容创建订单实例
+    order = Order(
+        id=order_id_counter,
+        start_rent_at=request.start_rent_at,
+        status=False,
+        finish_rent_at=request.finish_rent_at,
+        UserId=1156,  # 用户ID需要根据实际情况设置
+        CarId=request.car_id,
+        total_price=calculate_total_price(request.start_rent_at, request.finish_rent_at),  # 根据租赁时间计算总价格
+        updatedAt=datetime.now(),
+        createdAt=datetime.now(),
+        slip=None
+    )
+
+    # 更新订单ID计数器
+    order_id_counter += 1
+
+    # 将订单添加到订单列表
+    orders.append(order)
+
+    return order
+
+def calculate_total_price(start_date, end_date):
+    # 在这里实现根据租赁时间计算总价格的逻辑
+    # 返回计算得到的总价格
+    return 1650000  # 这里使用的是固定的总价格，你需要根据实际情况进行计算

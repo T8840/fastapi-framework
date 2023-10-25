@@ -202,7 +202,7 @@ def get_car_detail(car_id: int):
 orders = []
 order_id_counter = 1
 
-@app.post("/customer/order", tags=["orders"])
+@app.post("/customer/order", tags=["orders"], status_code=201)
 def create_order(request: OrderCreateRequest):
     global order_id_counter
     
@@ -225,7 +225,6 @@ def create_order(request: OrderCreateRequest):
 
     # 将订单添加到订单列表
     orders.append(order)
-    order.status = 201
     return order
 
 def calculate_total_price(start_date, end_date):

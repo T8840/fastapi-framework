@@ -208,8 +208,8 @@ def create_order(request: OrderCreateRequest):
     # 根据请求内容创建订单实例
     order = Order(
         id=order_id_counter,
-        start_rent_at=request.start_rent_at,  # 将 date 对象转换为指定格式的字符串
-        finish_rent_at=request.finish_rent_at,  # 将 date 对象转换为指定格式的字符串        
+        start_rent_at=request.start_rent_at,  
+        finish_rent_at=request.finish_rent_at,        
         status=False,
         UserId=1156,  # 用户ID需要根据实际情况设置
         CarId=request.car_id,
@@ -231,3 +231,39 @@ def calculate_total_price(start_date, end_date):
     # 在这里实现根据租赁时间计算总价格的逻辑
     # 返回计算得到的总价格
     return 1650000  # 这里使用的是固定的总价格，你需要根据实际情况进行计算
+
+
+orders_db = {
+    1: {
+        "id": 1,
+        "total_price": 1000000,
+        "start_rent_at": date(2023, 10, 25),
+        "finish_rent_at": date(2023, 10, 28),
+        "status": False,
+        "slip": None,
+        "UserId": 1156,
+        "CarId": 3068,
+        "createdAt": "2023-10-25T06:06:28.691Z",
+        "updatedAt": "2023-10-25T06:06:28.691Z",
+        "User": {
+            "email": "qinmimi100@126.com",
+            "role": "Customer"
+        },
+        "Car": {
+            "name": "Honda Mobilio",
+            "category": "large",
+            "price": 250000,
+            "status": False,
+            "start_rent_at": None,
+            "finish_rent_at": None,
+            "image": "https://firebasestorage.googleapis.com/v0/b/km-sib-2---secondhand.appspot.com/o/cars%2F1698211502835-mobilio.jpg?alt=media"
+        }
+    }
+}
+
+@app.get("/customer/order/{order_id}", response_model=Order, tags=["orders"])
+def get_order(order_id: int):
+    order = orders_db.get(order_id)
+    if not order:
+        return {"message": "Order not found"}
+    return order

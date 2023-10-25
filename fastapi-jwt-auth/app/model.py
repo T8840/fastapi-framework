@@ -129,23 +129,23 @@ class OrderCreateRequest(BaseModel):
     finish_rent_at: str
     car_id: int
 
-    @validator('start_rent_at', 'finish_rent_at')
-    def validate_datetime(cls, value):
-        # 自定义日期时间验证器
-        # 是为了针对前端传入"start_rent_at":"2023-10-26","finish_rent_at":"2023-10-27"
-        # 如果不加入这个那么前端传入格式为："start_rent_at": "2023-10-26T00:00:00.000Z", "finish_rent_at": "2023-10-27T00:00:00.000Z",
-        if not isinstance(value, date):
-            try:
-                return datetime.strptime(value, "%Y-%m-%d").date()
-            except ValueError:
-                raise ValueError("Invalid datetime format. Please use the format YYYY-MM-DD.")
-        return value
+    # @validator('start_rent_at', 'finish_rent_at')
+    # def validate_datetime(cls, value):
+    #     # 自定义日期时间验证器
+    #     # 是为了针对前端传入"start_rent_at":"2023-10-26","finish_rent_at":"2023-10-27"
+    #     # 如果不加入这个那么前端传入格式为："start_rent_at": "2023-10-26T00:00:00.000Z", "finish_rent_at": "2023-10-27T00:00:00.000Z",
+    #     if not isinstance(value, date):
+    #         try:
+    #             return datetime.strptime(value, "%Y-%m-%d").date()
+    #         except ValueError:
+    #             raise ValueError("Invalid datetime format. Please use the format YYYY-MM-DD.")
+    #     return value
 
 class Order(BaseModel):
     id: int
-    start_rent_at: datetime
+    start_rent_at: str
     status: bool
-    finish_rent_at: datetime
+    finish_rent_at: str
     UserId: int
     CarId: int
     total_price: int

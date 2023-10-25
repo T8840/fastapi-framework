@@ -125,8 +125,8 @@ class CarsListSchema(BaseModel):
 
 
 class OrderCreateRequest(BaseModel):
-    start_rent_at: date
-    finish_rent_at: date
+    start_rent_at: str
+    finish_rent_at: str
     car_id: int
 
     @validator('start_rent_at', 'finish_rent_at')

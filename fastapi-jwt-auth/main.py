@@ -9,7 +9,7 @@ from app.auth.auth_bearer import JWTBearer
 from app.auth.auth_handler import signJWT, signCustomerJWT, customer_register_token_response
 
 from fastapi.middleware.cors import CORSMiddleware
-
+import math
 posts = [
     {
         "id": 1,

@@ -259,7 +259,32 @@ orders_db = {
             "finish_rent_at": None,
             "image": "https://firebasestorage.googleapis.com/v0/b/km-sib-2---secondhand.appspot.com/o/cars%2F1698211502835-mobilio.jpg?alt=media"
         }
-    }
+    },
+   2: {
+         "id": 1,
+        "total_price": 1000000,
+        "start_rent_at": "2023-10-25",
+        "finish_rent_at": "2023-10-28",
+        "status": False,
+        "slip": None,
+        "UserId": 1156,
+        "CarId": 3068,
+        "createdAt": "2023-10-25T06:06:28.691Z",
+        "updatedAt": "2023-10-25T06:06:28.691Z",
+        "User": {
+            "email": "qinmimi100@126.com",
+            "role": "Customer"
+        },
+        "Car": {
+            "name": "Honda Mobilio",
+            "category": "large",
+            "price": 250000,
+            "status": False,
+            "start_rent_at": None,
+            "finish_rent_at": None,
+            "image": "https://firebasestorage.googleapis.com/v0/b/km-sib-2---secondhand.appspot.com/o/cars%2F1698211502835-mobilio.jpg?alt=media"
+        }
+   } 
 }
 
 @app.get("/customer/order/{order_id}", tags=["orders"])
@@ -268,3 +293,19 @@ def get_order(order_id: int):
     if not order:
         return {"message": "Order not found"}
     return order
+
+@app.put("/customer/order/{order_id}/slip", response_model=Order, tags=["orders"])
+def upload_slip(order_id: int, slip: UploadFile = File(...)):
+    order = orders_db.get(order_id)
+    if not order:
+        return {"message": "Order not found"}
+
+    # 保存凭条并更新订单信息
+    file_path = f"orders/{datetime.now().strftime('%Y%m%d%H%M%S')}-{slip.filename}"
+    with open(file_path, "wb") as f:
+        f.write(slip.file.read())
+
+    order["slip"] = file_path
+    order["updatedAt"] = datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+
+    return order    

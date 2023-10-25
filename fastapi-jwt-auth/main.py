@@ -188,3 +188,11 @@ def get_cars(name: str = "", category: str = "", isRented: str = "", minPrice: s
         "count": count,
         "cars": paginated_cars
     }
+
+
+@app.get("/customer/car/{car_id}", tags=["cars"])
+def get_car_detail(car_id: int):
+    for car in cars:
+        if car["id"] == car_id:
+            return car
+    return {"message": "Car Id not found"}

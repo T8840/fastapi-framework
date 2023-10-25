@@ -11,6 +11,7 @@ from app.auth.auth_handler import signJWT, signCustomerJWT, customer_register_to
 from fastapi.middleware.cors import CORSMiddleware
 import math
 from datetime import datetime
+from datetime import date
 
 app = FastAPI()
 origins = ["*"]

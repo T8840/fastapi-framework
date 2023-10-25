@@ -225,7 +225,7 @@ def create_order(request: OrderCreateRequest):
 
     # 将订单添加到订单列表
     orders.append(order)
-
+    order.status = 201
     return order
 
 def calculate_total_price(start_date, end_date):

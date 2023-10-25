@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, EmailStr
+from pydantic import BaseModel, Field, EmailStr,List
 
 class PostSchema(BaseModel):
     id: int = Field(default=None)

@@ -238,8 +238,8 @@ orders_db = {
     1: {
         "id": 1,
         "total_price": 1000000,
-        "start_rent_at": date(2023, 10, 25),
-        "finish_rent_at": date(2023, 10, 28),
+        "start_rent_at": "2023-10-25",
+        "finish_rent_at": "2023-10-28",
         "status": False,
         "slip": None,
         "UserId": 1156,

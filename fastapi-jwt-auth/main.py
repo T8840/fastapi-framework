@@ -262,7 +262,7 @@ orders_db = {
     }
 }
 
-@app.get("/customer/order/{order_id}", response_model=Order, tags=["orders"])
+@app.get("/customer/order/{order_id}", tags=["orders"])
 def get_order(order_id: int):
     order = orders_db.get(order_id)
     if not order:
